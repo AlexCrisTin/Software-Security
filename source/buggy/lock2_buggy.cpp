@@ -1,18 +1,3 @@
-// ============================================================================
-// lock2_buggy.cpp
-// He thong khoa cua thong minh - PHIEN BAN CO LOI (dung enum, khop style
-// voi lock2.cpp / lock.py / lock_buggy.py de bo 3 ngon ngu dong bo nhau)
-//
-// LOI THIET KE CO Y (giong het lock_buggy.py):
-//   Trong step(), khi action == ACTION_SUBMIT_PIN, he thong VAN so sanh
-//   entered_pin voi correct_pin va tang failed_attempts neu sai, nhung
-//   KHONG dung ket qua so sanh do de quyet dinh trang thai tiep theo.
-//   Ca 2 nhanh (dung/sai) deu ket thuc o STATE_UNLOCKED.
-//
-//   => Vi pham thuoc tinh safety: "Khong bao gio o UNLOCKED neu PIN
-//      nhap vao khong khop correct_pin".
-// ============================================================================
-
 #include <iostream>
 #include <string>
 
