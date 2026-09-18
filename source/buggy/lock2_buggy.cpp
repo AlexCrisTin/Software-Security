@@ -126,27 +126,20 @@ std::string stateToString(LockState s) {
 }
 
 int main() {
-    std::cout << "=== DEMO: Smart Lock lock2_buggy.cpp ===" << std::endl << std::endl;
+    std::cout << "Smart lock" << std::endl << std::endl;
 
     SmartLock lock("1234", 3);
     std::cout << "Trang thai ban dau: " << stateToString(lock.getState()) << std::endl;
 
     // Ke tan cong nhap PIN sai hoan toan: "9999"
-    std::cout << std::endl << "--- Nhap PIN SAI hoan toan: \"9999\" ---" << std::endl;
+    std::cout << std::endl << "Nhap PIN" << std::endl;
     lock.step(ACTION_PRESS_DIGIT, '9');
     lock.step(ACTION_PRESS_DIGIT, '9');
     lock.step(ACTION_PRESS_DIGIT, '9');
     lock.step(ACTION_PRESS_DIGIT, '9');
     lock.step(ACTION_SUBMIT_PIN);
-    std::cout << "Sau khi nhap SAI PIN '9999': " << stateToString(lock.getState())
+    std::cout << stateToString(lock.getState())
               << " | Failed count = " << lock.getFailedAttempts() << std::endl;
-
-    if (lock.getState() == STATE_UNLOCKED) {
-        std::cout << std::endl;
-        std::cout << "*** LO HONG XAC NHAN: cua da MO du nhap sai PIN! ***" << std::endl;
-        std::cout << "    Day la counterexample doi chieu voi lock2.cpp (ban dung)" << std::endl;
-        std::cout << "    va lock_buggy.py (ban Python tuong ung)." << std::endl;
-    }
 
     return 0;
 }
