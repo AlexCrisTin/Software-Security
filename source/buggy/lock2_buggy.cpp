@@ -129,7 +129,7 @@ int main() {
     std::cout << "Smart lock" << std::endl << std::endl;
 
     SmartLock lock("1234", 3);
-    std::cout << "Trang thai ban dau: " << stateToString(lock.getState()) << std::endl;
+    std::cout << stateToString(lock.getState()) << std::endl;
 
     // Ke tan cong nhap PIN sai hoan toan: "9999"
     std::cout << std::endl << "Nhap PIN" << std::endl;
