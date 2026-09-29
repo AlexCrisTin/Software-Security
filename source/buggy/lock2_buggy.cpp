@@ -131,7 +131,6 @@ int main() {
     SmartLock lock("1234", 3);
     std::cout << stateToString(lock.getState()) << std::endl;
 
-    // Ke tan cong nhap PIN sai hoan toan: "9999"
     std::cout << std::endl << "Nhap PIN: 9999" << std::endl;
     lock.step(ACTION_PRESS_DIGIT, '9');
     lock.step(ACTION_PRESS_DIGIT, '9');
