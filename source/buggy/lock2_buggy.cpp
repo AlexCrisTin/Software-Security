@@ -21,6 +21,7 @@ struct AtomicPropositions {
     bool is_unlocking;
     bool is_unlocked;
     bool is_alarm;
+    bool is_authenticated;
     bool has_failed_max;
 };
 
@@ -31,6 +32,11 @@ private:
     std::string entered_pin;
     int failed_attempts;
     int max_attempts;
+    bool authenticated;
+
+    bool isPinDigit(char digit) const {
+        return digit >= '0' && digit <= '9';
+    }
 
 public:
     SmartLock(const std::string& pin = "1234", int max_tries = 3)
@@ -42,6 +48,7 @@ public:
         state = STATE_LOCKED;
         failed_attempts = 0;
         entered_pin = "";
+        authenticated = false;
     }
 
     LockState getState() const {
@@ -54,10 +61,11 @@ public:
 
     AtomicPropositions getAtomicPropositions() const {
         return {
-            state == STATE_LOCKED,
+            state != STATE_UNLOCKED,
             state == STATE_UNLOCKING,
             state == STATE_UNLOCKED,
             state == STATE_ALARM,
+            authenticated,
             failed_attempts >= max_attempts
         };
     }
@@ -65,17 +73,19 @@ public:
     void step(Action action, char digit = '\0') {
         switch (state) {
             case STATE_LOCKED:
-                if (action == ACTION_PRESS_DIGIT && digit != '\0') {
+                if (action == ACTION_PRESS_DIGIT && isPinDigit(digit)) {
                     state = STATE_UNLOCKING;
                     entered_pin = digit;
                 }
                 break;
 
             case STATE_UNLOCKING:
-                if (action == ACTION_PRESS_DIGIT && digit != '\0') {
+                if (action == ACTION_PRESS_DIGIT && isPinDigit(digit)
+                        && entered_pin.size() < correct_pin.size()) {
                     entered_pin += digit;
                 } else if (action == ACTION_SUBMIT_PIN) {
                     bool pin_correct = (entered_pin == correct_pin);
+                    authenticated = pin_correct;
 
                     if (!pin_correct) {
                         failed_attempts++;
@@ -97,12 +107,14 @@ public:
                 } else if (action == ACTION_CANCEL) {
                     entered_pin = "";
                     state = STATE_LOCKED;
+                    authenticated = false;
                 }
                 break;
 
             case STATE_UNLOCKED:
                 if (action == ACTION_LOCK_DOOR) {
                     state = STATE_LOCKED;
+                    authenticated = false;
                 }
                 break;
 

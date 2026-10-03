@@ -1,4 +1,9 @@
-from ch1_models.kripke import KripkeStructure
+try:
+    # Package import used by `python -m unittest ...` from the repository root.
+    from source.ch1_models.kripke import KripkeStructure
+except ModuleNotFoundError:
+    # Direct-script fallback when `source` itself is placed on PYTHONPATH.
+    from ch1_models.kripke import KripkeStructure
 
 
 def build_lock_model(insecure: bool = False) -> KripkeStructure:
@@ -14,10 +19,14 @@ def build_lock_model(insecure: bool = False) -> KripkeStructure:
     """
     k = KripkeStructure()
 
+    # "locked" describes the physical door, not only the enum value
+    # STATE_LOCKED.  The door also remains closed while a PIN is being entered
+    # and while the controller is in ALARM.
     k.add_state("LOCKED", labels=["locked"], initial=True)
-    k.add_state("UNLOCKING", labels=["unlocking"])
-    k.add_state("UNLOCKED", labels=["unlocked"])
-    k.add_state("ALARM", labels=["alarm"])
+    k.add_state("UNLOCKING", labels=["locked", "unlocking"])
+    unlocked_labels = ["unlocked", "unauthenticated"] if insecure else ["unlocked", "authenticated"]
+    k.add_state("UNLOCKED", labels=unlocked_labels)
+    k.add_state("ALARM", labels=["locked", "alarm"])
 
     # Nhan mot chu so dau tien -> chuyen sang dang nhap (UNLOCKING)
     k.add_transition("LOCKED", "UNLOCKING")
@@ -40,6 +49,9 @@ def build_lock_model(insecure: bool = False) -> KripkeStructure:
     k.add_transition("UNLOCKED", "LOCKED")
     # Tu ALARM, quan tri vien reset ve LOCKED
     k.add_transition("ALARM", "LOCKED")
+    # Moi hanh dong khong dac quyen bi bo qua khi dang ALARM.  Self-loop nay
+    # mo hinh hoa kich ban ke tan cong tiep tuc nhap/gửi PIN sau canh bao.
+    k.add_transition("ALARM", "ALARM")
 
     return k
 
