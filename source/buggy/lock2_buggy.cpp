@@ -91,17 +91,6 @@ public:
                         failed_attempts++;
                     }
 
-                    // --- LOI: thieu dieu kien "if (pin_correct)" tai day ---
-                    // Dang le phai la:
-                    //   if (pin_correct) {
-                    //       state = STATE_UNLOCKED;
-                    //       failed_attempts = 0;
-                    //   } else if (failed_attempts >= max_attempts) {
-                    //       state = STATE_ALARM;
-                    //   } else {
-                    //       state = STATE_LOCKED;
-                    //   }
-                    // Nhung code hien tai luon luon mo khoa, bat ke pin_correct:
                     entered_pin = "";
                     state = STATE_UNLOCKED;
                 } else if (action == ACTION_CANCEL) {
