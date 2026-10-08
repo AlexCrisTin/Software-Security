@@ -120,6 +120,10 @@ public:
                 break;
         }
     }
+
+    std::size_t getPendingPinLength() const {
+        return entered_pin.size();
+    }
 };
 
 std::string stateToString(LockState s) {
@@ -135,6 +139,11 @@ std::string stateToString(LockState s) {
 int main() {
     SmartLock lock("1234", 3);
     std::cout << "Trang thai ban dau: " << stateToString(lock.getState()) << std::endl;
+
+    lock.step(ACTION_PRESS_DIGIT, '9');
+    lock.step(ACTION_CANCEL);
+    std::cout << "Sau CANCEL: " << stateToString(lock.getState())
+              << ", Pending PIN length = " << lock.getPendingPinLength() << std::endl;
 
     lock.step(ACTION_PRESS_DIGIT, '1');
     lock.step(ACTION_PRESS_DIGIT, '2');

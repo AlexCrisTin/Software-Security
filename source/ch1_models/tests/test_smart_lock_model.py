@@ -8,6 +8,7 @@ class SmartLockKripkeTests(unittest.TestCase):
         model = build_lock_model(insecure=False)
         self.assertIn("authenticated", model.labels["UNLOCKED"])
         self.assertIn("locked", model.labels["ALARM"])
+        self.assertNotIn("unlocked", model.labels["ALARM"])
         self.assertIn("ALARM", model.transitions["ALARM"])
 
     def test_buggy_model_marks_unauthenticated_unlock(self):

@@ -196,14 +196,21 @@ def main() -> int:
 
     checks = []
 
-    # P4 violation query: leave ALARM on a non-admin action.
+    # Joint P2/P4 safety query. P2 forbids ALARM and UNLOCKED from holding
+    # together; P4 forbids leaving ALARM on a non-admin action. They share one
+    # solver query so the six-query transcript used by the report stays stable.
     k = 7
     solver, v = build_bmc(k, buggy=False)
-    solver.add(Or(*[
+    p2_bad = Or(*[
+        And(v.state[i] == ALARM, v.state[i] == UNLOCKED)
+        for i in range(k + 1)
+    ])
+    p4_bad = Or(*[
         And(v.state[i] == ALARM, v.action[i] != ADMIN_RESET,
             v.state[i + 1] != ALARM)
         for i in range(k)
-    ]))
+    ])
+    solver.add(Or(p2_bad, p4_bad))
     checks.append(_run_query("SAFE P4 alarm escape, k=7", solver, v, k, unsat))
 
     # Concrete persistent-attack witness: three wrong PINs, then two more

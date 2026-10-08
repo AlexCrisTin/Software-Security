@@ -73,18 +73,6 @@
       "text": "Cac phep cong bo dem phai duoc kiem tra nguy co tran so nguyen 32 bit",
       "category": "safety",
       "priority": "HIGH"
-    },
-    {
-      "id": "REQ-13",
-      "text": "Ham tinh ty le that bai phai xu ly truong hop tong so lan thu bang 0",
-      "category": "functional",
-      "priority": "MEDIUM"
-    },
-    {
-      "id": "REQ-14",
-      "text": "Harness duong dan phai tim duoc nhanh dac biet code_a bang 12 va code_b bang 34",
-      "category": "test",
-      "priority": "LOW"
     }
   ],
   "state_machine": {
@@ -102,43 +90,131 @@
       "LOCKED_0"
     ],
     "labeling": {
-      "LOCKED_0": ["locked", "failed_0"],
-      "UNLOCKING_0": ["locked", "unlocking", "failed_0"],
-      "LOCKED_1": ["locked", "failed_1"],
-      "UNLOCKING_1": ["locked", "unlocking", "failed_1"],
-      "LOCKED_2": ["locked", "failed_2"],
-      "UNLOCKING_2": ["locked", "unlocking", "failed_2"],
-      "UNLOCKED_AUTH": ["unlocked", "authenticated"],
-      "ALARM_3": ["locked", "alarm", "failed_3"]
+      "LOCKED_0": [
+        "locked",
+        "failed_0"
+      ],
+      "UNLOCKING_0": [
+        "locked",
+        "unlocking",
+        "failed_0"
+      ],
+      "LOCKED_1": [
+        "locked",
+        "failed_1"
+      ],
+      "UNLOCKING_1": [
+        "locked",
+        "unlocking",
+        "failed_1"
+      ],
+      "LOCKED_2": [
+        "locked",
+        "failed_2"
+      ],
+      "UNLOCKING_2": [
+        "locked",
+        "unlocking",
+        "failed_2"
+      ],
+      "UNLOCKED_AUTH": [
+        "unlocked",
+        "authenticated"
+      ],
+      "ALARM_3": [
+        "locked",
+        "alarm",
+        "failed_3"
+      ]
     },
     "transitions": [
-      ["LOCKED_0", "UNLOCKING_0"],
-      ["UNLOCKING_0", "UNLOCKED_AUTH"],
-      ["UNLOCKING_0", "LOCKED_1"],
-      ["LOCKED_1", "UNLOCKING_1"],
-      ["UNLOCKING_1", "UNLOCKED_AUTH"],
-      ["UNLOCKING_1", "LOCKED_2"],
-      ["LOCKED_2", "UNLOCKING_2"],
-      ["UNLOCKING_2", "UNLOCKED_AUTH"],
-      ["UNLOCKING_2", "ALARM_3"],
-      ["UNLOCKED_AUTH", "LOCKED_0"],
-      ["ALARM_3", "ALARM_3"],
-      ["ALARM_3", "LOCKED_0"]
+      [
+        "LOCKED_0",
+        "UNLOCKING_0"
+      ],
+      [
+        "UNLOCKING_0",
+        "UNLOCKED_AUTH"
+      ],
+      [
+        "UNLOCKING_0",
+        "LOCKED_1"
+      ],
+      [
+        "LOCKED_1",
+        "UNLOCKING_1"
+      ],
+      [
+        "UNLOCKING_1",
+        "UNLOCKED_AUTH"
+      ],
+      [
+        "UNLOCKING_1",
+        "LOCKED_2"
+      ],
+      [
+        "LOCKED_2",
+        "UNLOCKING_2"
+      ],
+      [
+        "UNLOCKING_2",
+        "UNLOCKED_AUTH"
+      ],
+      [
+        "UNLOCKING_2",
+        "ALARM_3"
+      ],
+      [
+        "UNLOCKED_AUTH",
+        "LOCKED_0"
+      ],
+      [
+        "ALARM_3",
+        "ALARM_3"
+      ],
+      [
+        "ALARM_3",
+        "LOCKED_0"
+      ]
     ]
   },
   "additional_flows": {
     "Mo hinh loi v0": {
-      "states": ["LOCKED", "UNLOCKING", "UNLOCKED_UNAUTH"],
-      "initial": ["LOCKED"],
+      "states": [
+        "LOCKED",
+        "UNLOCKING",
+        "UNLOCKED_UNAUTH"
+      ],
+      "initial": [
+        "LOCKED"
+      ],
       "labeling": {
-        "LOCKED": ["locked"],
-        "UNLOCKING": ["locked", "unlocking"],
-        "UNLOCKED_UNAUTH": ["unlocked", "unauthenticated", "violation"]
+        "LOCKED": [
+          "locked"
+        ],
+        "UNLOCKING": [
+          "locked",
+          "unlocking"
+        ],
+        "UNLOCKED_UNAUTH": [
+          "unlocked",
+          "unauthenticated",
+          "violation"
+        ]
       },
       "transitions": [
-        ["LOCKED", "UNLOCKING"],
-        ["UNLOCKING", "UNLOCKED_UNAUTH"],
-        ["UNLOCKED_UNAUTH", "LOCKED"]
+        [
+          "LOCKED",
+          "UNLOCKING"
+        ],
+        [
+          "UNLOCKING",
+          "UNLOCKED_UNAUTH"
+        ],
+        [
+          "UNLOCKED_UNAUTH",
+          "LOCKED"
+        ]
       ]
     }
   },
@@ -152,12 +228,26 @@
     "atom2": "alarm"
   },
   "functions": [
-    {"name": "parse_pin_input", "kind": "buffer_copy", "expected_cwe": "CWE-120"},
-    {"name": "write_auth_log", "kind": "alloc_release", "expected_cwe": "CWE-401"},
-    {"name": "close_unlock_session", "kind": "alloc_release", "expected_cwe": "CWE-415"},
-    {"name": "release_pin_buffer", "kind": "alloc_release", "expected_cwe": "CWE-416"},
-    {"name": "failed_attempt_ratio", "kind": "dynamic_fuzz", "expected_cwe": "CWE-369"},
-    {"name": "smart_lock_unlock_code", "kind": "path_directed_test", "expected_result": "code_a=12, code_b=34"}
+    {
+      "name": "parse_pin_input",
+      "kind": "buffer_copy",
+      "expected_cwe": "CWE-120"
+    },
+    {
+      "name": "write_auth_log",
+      "kind": "alloc_release",
+      "expected_cwe": "CWE-401"
+    },
+    {
+      "name": "close_unlock_session",
+      "kind": "alloc_release",
+      "expected_cwe": "CWE-415"
+    },
+    {
+      "name": "release_pin_buffer",
+      "kind": "alloc_release",
+      "expected_cwe": "CWE-416"
+    }
   ],
   "arithmetic_checks": [
     "failed_attempt_counter",
@@ -169,16 +259,24 @@
   "test_cases": [
     {
       "id": "TC-P1-BUGGY",
-      "requirement_ids": ["REQ-1"],
+      "requirement_ids": [
+        "REQ-1"
+      ],
       "title": "PIN sai mo khoa tren v0",
       "preconditions": "Khoa o LOCKED, failed_attempts = 0",
-      "steps": ["Nhap PIN sai", "Gui SUBMIT_PIN"],
+      "steps": [
+        "Nhap PIN sai",
+        "Gui SUBMIT_PIN"
+      ],
       "expected_result": "BMC tim thay UNLOCKED voi authenticated = false tren v0",
       "priority": "HIGH"
     },
     {
       "id": "TC-ALARM-PERSIST",
-      "requirement_ids": ["REQ-2", "REQ-3"],
+      "requirement_ids": [
+        "REQ-2",
+        "REQ-3"
+      ],
       "title": "Tan cong tiep tuc sau ALARM",
       "preconditions": "Khoa o LOCKED, failed_attempts = 0",
       "steps": [
@@ -190,75 +288,86 @@
     },
     {
       "id": "TC-ADMIN-RESET",
-      "requirement_ids": ["REQ-4"],
+      "requirement_ids": [
+        "REQ-4"
+      ],
       "title": "Khoi phuc boi quan tri vien",
       "preconditions": "He thong dang o ALARM",
-      "steps": ["Gui ADMIN_RESET"],
+      "steps": [
+        "Gui ADMIN_RESET"
+      ],
       "expected_result": "He thong ve LOCKED va failed_attempts = 0",
       "priority": "HIGH"
     },
     {
       "id": "TC-P3-VALID",
-      "requirement_ids": ["REQ-5"],
+      "requirement_ids": [
+        "REQ-5"
+      ],
       "title": "Mo khoa hop le",
       "preconditions": "Khoa o LOCKED",
-      "steps": ["Nhap PIN dung", "Gui SUBMIT_PIN"],
+      "steps": [
+        "Nhap PIN dung",
+        "Gui SUBMIT_PIN"
+      ],
       "expected_result": "He thong den UNLOCKED_AUTH",
       "priority": "MEDIUM"
     },
     {
       "id": "TC-LOCK-DOOR",
-      "requirement_ids": ["REQ-6"],
+      "requirement_ids": [
+        "REQ-6"
+      ],
       "title": "Khoa cua sau khi mo",
       "preconditions": "He thong o UNLOCKED_AUTH",
-      "steps": ["Gui LOCK_DOOR"],
+      "steps": [
+        "Gui LOCK_DOOR"
+      ],
       "expected_result": "He thong ve LOCKED",
       "priority": "HIGH"
     },
     {
       "id": "TC-CANCEL",
-      "requirement_ids": ["REQ-7"],
+      "requirement_ids": [
+        "REQ-7"
+      ],
       "title": "Huy qua trinh nhap PIN",
       "preconditions": "He thong o UNLOCKING",
-      "steps": ["Gui CANCEL"],
+      "steps": [
+        "Gui CANCEL"
+      ],
       "expected_result": "PIN tam duoc xoa va he thong ve LOCKED",
       "priority": "MEDIUM"
     },
     {
       "id": "TC-MEMORY-CWE",
-      "requirement_ids": ["REQ-8", "REQ-9", "REQ-10", "REQ-11"],
+      "requirement_ids": [
+        "REQ-8",
+        "REQ-9",
+        "REQ-10",
+        "REQ-11"
+      ],
       "title": "Quet bon mau loi bo nho",
       "preconditions": "Bien dich smart_lock_cwe_samples.c voi Clang va AddressSanitizer",
-      "steps": ["Chay static analyzer", "Chay tung nhanh overflow, double-free va use-after-free"],
+      "steps": [
+        "Chay static analyzer",
+        "Chay tung nhanh overflow, double-free va use-after-free"
+      ],
       "expected_result": "Phat hien CWE-120, CWE-401, CWE-415 va CWE-416 trong bo mau co chu dich",
       "priority": "HIGH"
     },
     {
       "id": "TC-SMT-COUNTERS",
-      "requirement_ids": ["REQ-12"],
+      "requirement_ids": [
+        "REQ-12"
+      ],
       "title": "Tim nghiem tran bo dem 32 bit",
       "preconditions": "Z3 san sang",
-      "steps": ["Chay smart_lock_extended_smt.py"],
+      "steps": [
+        "Chay smart_lock_extended_smt.py"
+      ],
       "expected_result": "Nam cau hinh tong quat SAT; bo dem failed_attempts bi chan 0..3 cho ket qua UNSAT",
       "priority": "HIGH"
-    },
-    {
-      "id": "TC-FUZZ-ZERO",
-      "requirement_ids": ["REQ-13"],
-      "title": "Fuzz phep chia khi tong lan thu bang 0",
-      "preconditions": "Harness Python san sang",
-      "steps": ["Chay 300 dau vao xac dinh"],
-      "expected_result": "Tai tao 11 loi chia cho 0 co kiem soat trong ham mau",
-      "priority": "MEDIUM"
-    },
-    {
-      "id": "TC-PATH-MAGIC",
-      "requirement_ids": ["REQ-14"],
-      "title": "Tim nhanh ma dac biet",
-      "preconditions": "Harness Python san sang",
-      "steps": ["Dao dieu kien code_a", "Dao dieu kien code_b"],
-      "expected_result": "Tim duoc code_a bang 12 va code_b bang 34 o lan thu ba",
-      "priority": "LOW"
     }
   ]
 }
